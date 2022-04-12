@@ -9,59 +9,66 @@ class TodoList extends Component {
       inputValue: "",
       list: [],
     };
+    this.inputChange = this.inputChange.bind(this);
+    this.inputClickButton = this.inputClickButton.bind(this);
+    this.dell = this.dell.bind(this);
   }
   render() {
     return (
       <div>
         {/* 这是一个input */}
 
-      <h1>hello world</h1>
+        <h1>hello world</h1>
         <input
           type="text"
           className="input"
           value={this.state.inputValue}
-          onChange={this.inputChange.bind(this)}
+          onChange={this.inputChange}
         />
-        <button onClick={this.inputClickButton.bind(this)}>提交</button>
-        <ul>
-          {this.state.list.map((item, index) => {
-            //map 进行循环
-            return (
-              <div>
-                <TodoItem
-                  content={item}
-                  index={index}
-                  dells={this.dell.bind(this)}
-                />
-              </div>
-            );
-          })}
-        </ul>
+        <button onClick={this.inputClickButton}>提交</button>
+        <ul>{this.getTodoItem()}</ul>
       </div>
     );
   }
-  inputChange(e) {
-    this.setState({
-      inputValue: e.target.value,
+  getTodoItem() {
+    return this.state.list.map((item, index) => {
+      //map 进行循环
+      return <TodoItem content={item} index={index} dells={this.dell} />;
     });
-    console.log(e.target.value); //target指的是input的dom节点
+  }
+  inputChange(e) {
+    const value = e.target.value;
+    this.setState(() => ({
+      inputValue: value,
+    })); //target指的是input的dom节点
   }
 
   inputClickButton() {
-    this.setState({
-      list: [...this.state.list, this.state.inputValue],
+    this.setState(prevState => ({
+      list: [...prevState.list, prevState.inputValue],
       inputValue: "",
-    });
+    }));
+    // this.setState({
+    //   list: [...this.state.list, this.state.inputValue],
+    //   inputValue: "",
+    // });
   }
 
   dell(index) {
     //immutable
     //state不允许我们做任何的改变
-    const list = [...this.state.list];
-    list.splice(index, 1);
-    this.setState({
-      list: list,
+    // const list = [...this.state.list];
+    // list.splice(index, 1);
+    this.setState(prevState => {
+      const list = [...prevState.list];
+      list.splice(index, 1);
+      return {
+        list,
+      };
     });
+    // this.setState({
+    //   list: list,
+    // });
     console.log(index);
   }
 }

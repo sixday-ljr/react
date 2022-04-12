@@ -1,16 +1,23 @@
-import React, { Component } from "react";
-
-class TodoItem extends React.Component {
+import { Component } from "react";
+import PropTypes from 'prop-types'
+class TodoItem extends Component {
   constructor(props) {
     super(props);
     this.dell = this.dell.bind(this);
   }
   render() {
-    return <div onClick={this.dell}>{this.props.content}</div>;
+    const { content } = this.props;
+    return <div onClick={this.dell}>{content}</div>;
   }
   dell() {
-    this.props.dells(this.props.index);
+    const { dells, index } = this.props;
+    dells(index);
   }
+  
 }
-
+TodoItem.propTypes ={
+  content:PropTypes.string,
+  dells:PropTypes.func,
+  index:PropTypes.number
+}
 export default TodoItem;
